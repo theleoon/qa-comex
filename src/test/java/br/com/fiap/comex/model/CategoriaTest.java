@@ -1,18 +1,22 @@
-package br.com.fiap.comex;
+package br.com.fiap.comex.model;
 
+import br.com.fiap.comex.ComexApplication;
 import br.com.fiap.comex.model.categoria.Categoria;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@SpringBootTest
+@ContextConfiguration(classes = ComexApplication.class)
 @ActiveProfiles("test")
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CategoriaTest {
 
     private Categoria categoria;

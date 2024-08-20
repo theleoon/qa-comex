@@ -9,13 +9,12 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/categorias")
@@ -25,7 +24,7 @@ public class CategoriaController {
     @Autowired
     private CategoriaService service;
 
-    @PostMapping("/new")
+    @PostMapping
     public ResponseEntity<CategoriaDto> inserirNova(@Valid CategoriaForm form,
                                                     UriComponentsBuilder uriBuilder,
                                                     BindingResult result){
@@ -35,7 +34,16 @@ public class CategoriaController {
         Categoria novaCategoria = form.converter();
         service.cadastra(novaCategoria);
 
-        URI uri = uriBuilder.path("/api/categorias/new/{id}").buildAndExpand(novaCategoria.getId()).toUri();
+        URI uri = uriBuilder.path("/api/categorias/{id}").buildAndExpand(novaCategoria.getId()).toUri();
         return ResponseEntity.created(uri).body(new CategoriaDto(novaCategoria));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriaDto> getById(@PathVariable Long id) {
+        Optional<Categoria> optionalCategoria = service.getById(id);
+        if (optionalCategoria.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(new CategoriaDto(optionalCategoria.get()));
     }
 }

@@ -23,7 +23,7 @@ public class Pedido{
     @Column(name = "data", nullable = false)
     private LocalDate data;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cliente_id", nullable = false)
     private Cliente cliente;
 

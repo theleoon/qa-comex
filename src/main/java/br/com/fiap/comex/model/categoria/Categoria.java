@@ -26,6 +26,14 @@ public class Categoria  {
         this.nome = nome;
         this.status = CategoriaStatusEnum.ATIVA ;
     }
+
+    public Categoria(String nome) {
+        if(nome==null){
+            throw new NullPointerException();
+        }
+        this.nome = nome;
+        this.status = CategoriaStatusEnum.ATIVA;
+    }
     public Categoria() {}
 
     public String getNome() {
