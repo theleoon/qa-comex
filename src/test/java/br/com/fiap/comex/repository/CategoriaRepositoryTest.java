@@ -4,6 +4,7 @@ import br.com.fiap.comex.ComexApplication;
 import br.com.fiap.comex.model.categoria.Categoria;
 import br.com.fiap.comex.model.categoria.CategoriaStatusEnum;
 import br.com.fiap.comex.repository.categoria.CategoriaRepository;
+import br.com.fiap.comex.service.categoria.CategoriaService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,6 +29,8 @@ public class CategoriaRepositoryTest {
     private List<Categoria> categorias = new ArrayList<>();
     @Autowired
     private CategoriaRepository categoriaRepository;
+    @Autowired
+    private CategoriaService categoriaService;
 
     @BeforeAll
     public void build() {
@@ -55,4 +58,13 @@ public class CategoriaRepositoryTest {
 
         assertEquals(novaCategoria, categoriaRepository.findByNome("Móveis"));
     }
+
+    @Test
+    void deveriaAdicionarUmaNovaCategoria2() {
+        Categoria novaCategoria = new Categoria("Móveis");
+        categoriaService.cadastra(novaCategoria);
+
+        assertEquals(novaCategoria, categoriaRepository.findByNome("Móveis"));
+    }
+
 }

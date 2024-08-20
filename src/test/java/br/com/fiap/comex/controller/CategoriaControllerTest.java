@@ -55,17 +55,22 @@ public class CategoriaControllerTest {
 
     @Test
     public void deveriaCarregarCategoriaPorId() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/categorias/" + 1))
+        Long idCategoria = 1L;
+        String nomeCategoria = "INFO";
+
+        MvcResult mvcResult = mockMvc
+                .perform(MockMvcRequestBuilders.get("/api/categorias/" + idCategoria))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
+
         String response = mvcResult.getResponse().getContentAsString();
 
         System.out.println("deveriaCarregarCategoriaPorId " + response);
 
         CategoriaDto categoriaResponseDto = mapper.readValue(response, new TypeReference<CategoriaDto>() {});
 
-        assertEquals("INFO", categoriaResponseDto.getNome());
-        assertEquals(1L, categoriaResponseDto.getId());
+        assertEquals(nomeCategoria, categoriaResponseDto.getNome());
+        assertEquals(idCategoria, categoriaResponseDto.getId());
     }
 
 }

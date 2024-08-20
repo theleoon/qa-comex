@@ -2,16 +2,13 @@ package br.com.fiap.comex.model;
 
 import br.com.fiap.comex.ComexApplication;
 import br.com.fiap.comex.model.categoria.Categoria;
+import br.com.fiap.comex.model.categoria.CategoriaStatusEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 @SpringBootTest
 @ContextConfiguration(classes = ComexApplication.class)
@@ -21,23 +18,45 @@ public class CategoriaTest {
 
     private Categoria categoria;
 
+    /*
+    *   Seja possível criar uma categoria informando apenas um nome válido.
+        Seja possível criar uma categoria informando nome e status.
+        Não seja possível criar uma categoria com nome vazio.
+    * */
+
     @Test
-    public void testScenario1() {
-        Long valor1 = Long.valueOf(1L);
-        Long valor2 = Long.valueOf(3L);
+    public void sejaPossivelCriarUmaCategoriaComNomeValido() {
+        String nomeDaCategoria = "Informatica";
 
-        Long soma = valor1 + valor2;
-
-        Assert.assertEquals(soma, Long.valueOf(4L));
+        Categoria novaCategoria = new Categoria(nomeDaCategoria);
+        Assert.assertEquals(nomeDaCategoria, novaCategoria.getNome());
     }
 
     @Test
-    public void testScenario2() {
-        String fraseParte1 = "Bem vindo ao ";
-        String fraseParte2 = "Comex";
+    public void sejaPossivelCriarUmaCategoriaComNomeEStatusValido() {
+        String nomeDaCategoria = "Informatica";
+        CategoriaStatusEnum status = CategoriaStatusEnum.INATIVA;
 
-        String fraseCompleta = fraseParte1.concat(fraseParte2);
+        Categoria novaCategoria = new Categoria(nomeDaCategoria, status);
 
-        Assert.assertEquals(fraseCompleta, "Bem vindo ao Comex");
+        Assert.assertEquals(nomeDaCategoria, novaCategoria.getNome());
+        Assert.assertEquals(status, novaCategoria.getStatus());
     }
+
+    @Test
+    public void naoSejaPossivelCriarUmaCategoriaComNomeVazio(){
+        String nomeDaCategoria = "";
+//        boolean erro = false;
+//
+//        try {
+//            Categoria novaCategoria = new Categoria(nomeDaCategoria);
+//        } catch (IllegalArgumentException ex) {
+//           erro = true;
+//        }
+//
+//        Assert.assertEquals(true, erro);
+
+        Assert.assertThrows(java.lang.IllegalArgumentException.class, () -> new Categoria(nomeDaCategoria));
+    }
+
 }

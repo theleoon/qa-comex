@@ -23,17 +23,24 @@ public class Categoria  {
         if(nome==null){
             throw new NullPointerException();
         }
+        if(nome.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         this.nome = nome;
-        this.status = CategoriaStatusEnum.ATIVA ;
+        this.status = status;
     }
 
     public Categoria(String nome) {
         if(nome==null){
             throw new NullPointerException();
         }
+        if(nome.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
         this.nome = nome;
         this.status = CategoriaStatusEnum.ATIVA;
     }
+
     public Categoria() {}
 
     public String getNome() {
