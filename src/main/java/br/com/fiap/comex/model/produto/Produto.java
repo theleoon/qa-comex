@@ -18,7 +18,7 @@ public class Produto {
     private String nome;
 
     @Column(name = "preco_unitario", nullable = false, scale = 2)
-    private BigDecimal precoUnitario;
+    private BigDecimal precoUnitario = BigDecimal.ZERO;
 
     @Column(name = "descricao")
     private String descricao;

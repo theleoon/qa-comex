@@ -16,7 +16,7 @@ public class ItemDePedido {
     private Long id;
 
     @Column(name = "preco_unitario", nullable = false, scale = 2)
-    private BigDecimal precoUnitario;
+    private BigDecimal precoUnitario = BigDecimal.ZERO;
 
     @Column(name = "quantidade", nullable = false)
     private int quantidade;
@@ -30,7 +30,7 @@ public class ItemDePedido {
     private Produto produto;
 
     @Column(name = "desconto")
-    private BigDecimal desconto;
+    private BigDecimal desconto = BigDecimal.ZERO;
 
     @Column(name = "tipo_desconto", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -85,5 +85,18 @@ public class ItemDePedido {
 
     public void setPedido(Pedido pedido) {
         this.pedido= pedido;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDePedido{" +
+                "id=" + id +
+                ", precoUnitario=" + precoUnitario +
+                ", quantidade=" + quantidade +
+                ", pedido=" + pedido +
+                ", produto=" + produto +
+                ", desconto=" + desconto +
+                ", tipoDesconto=" + tipoDesconto +
+                '}';
     }
 }

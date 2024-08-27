@@ -28,103 +28,97 @@ public class Pedido{
     private Cliente cliente;
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
-    private List<ItemDePedido> listItemDePedido;
+    private List<ItemDePedido> itens = new ArrayList<>();
 
     @Column(name = "desconto", nullable = false, scale = 2)
-    private BigDecimal desconto;
+    private BigDecimal desconto = BigDecimal.ZERO;
 
     @Column(name = "tipo_desconto", nullable = false)
     @Enumerated(EnumType.STRING)
-    private TipoDescontoEnum tipoDesconto;
+    private TipoDescontoEnum tipoDesconto = TipoDescontoEnum.NENHUM;
 
     public Pedido() {
     }
 
-    public Pedido(Cliente cliente,
-                  TipoDescontoEnum tipoDesconto)  {
-        if(cliente == null){
-            throw new NullPointerException();
-        }
+    public Pedido(Cliente cliente, TipoDescontoEnum tipoDesconto) {
         this.cliente = cliente;
-        this.data = LocalDate.now();
-        this.tipoDesconto = tipoDesconto;
-        this.desconto = tipoDesconto.desconto();
-        this.listItemDePedido = new ArrayList<>();
+        aplicaDesconto(tipoDesconto);
     }
 
-    public void adicionarItem(ItemDePedido item){
-        item.setPedido(this);
-        this.listItemDePedido.add(item);
+    public void aplicaDesconto(TipoDescontoEnum tipoDesconto) {
+        this.tipoDesconto = tipoDesconto;
+        this.desconto = getValorLiquido().multiply(tipoDesconto.percentual());
     }
+
+    public BigDecimal getValorBruto(){
+        BigDecimal total = BigDecimal.ZERO;
+        for (ItemDePedido item : itens) {
+            total = total.add(item.getPrecoUnitario().subtract(item.getDesconto()));
+        }
+        return total;
+    }
+
+    public BigDecimal getValorLiquido(){
+        BigDecimal total = BigDecimal.ZERO;
+        for (ItemDePedido item : itens) {
+            total = total.add(item.getPrecoUnitario().subtract(item.getDesconto()));
+        }
+        return total.subtract(this.desconto);
+    }
+
+    public void addItems(List<ItemDePedido> itens) {
+        this.itens.addAll(itens);
+    }
+
+    public void addItem(ItemDePedido item) {
+        this.itens.add(item);
+    }
+
     public Long getId() {
         return id;
     }
 
-    public List<ItemDePedido> getListItemDePedido() {
-        return listItemDePedido;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getData() {
         return data;
     }
 
+    public void setData(LocalDate data) {
+        this.data = data;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<ItemDePedido> getItens() {
+        return itens;
+    }
+
     public BigDecimal getDesconto() {
         return desconto;
+    }
+
+    public void setDesconto(BigDecimal desconto) {
+        this.desconto = desconto;
     }
 
     public TipoDescontoEnum getTipoDesconto() {
         return tipoDesconto;
     }
 
-    @Override
-    public String toString() {
-        return "Pedido{" +
-                "cliente='" + cliente + '\'' +
-                ", data=" + data +
-                ", desconto='" + desconto + '\'' +
-                ", tipo desconto='" + tipoDesconto + '\'' +
-                '}';
+    public void setTipoDesconto(TipoDescontoEnum tipoDesconto) {
+        this.tipoDesconto = tipoDesconto;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pedido that = (Pedido) o;
-        return Objects.equals(cliente, that.getCliente()) && Objects.equals(data, that.getData());
-    }
-
-    public void aplicarDesconto(TipoDescontoEnum tipo) {
-        this.tipoDesconto = tipo;
-        this.desconto = tipo.desconto();
-    }
-
-    public BigDecimal getValorTotal(){
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        this.listItemDePedido.forEach(item -> {
-            BigDecimal valorParcial = item.getPrecoUnitario().multiply(new BigDecimal(item.getQuantidade()));
-            valorTotal.add(valorParcial);
-        });
-        return valorTotal;
-    }
-
-    public BigDecimal getDescontoTotal(){
-        BigDecimal valorTotal = BigDecimal.ZERO;
-        this.listItemDePedido.forEach(item -> {
-            valorTotal.add(item.getDesconto());
-        });
-        return valorTotal.add(desconto);
-    }
-
-    public int getQuantidadeProdutosVendidos(){
-        AtomicInteger valorTotal = new AtomicInteger();
-        this.listItemDePedido.forEach(item -> {
-            valorTotal.addAndGet(item.getQuantidade());
-        });
-        return valorTotal.get();
+    public int getQuantidadeItens() {
+        return this.itens.size();
     }
 }

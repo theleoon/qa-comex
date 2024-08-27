@@ -25,9 +25,9 @@ public class PedidoDetailsDto {
 
     public PedidoDetailsDto(Pedido pedido) {
         this.data = pedido.getData();
-        this.valorTotal = pedido.getValorTotal();
+        this.valorTotal = pedido.getValorLiquido();
         this.desconto = pedido.getDesconto();
-        pedido.getListItemDePedido().forEach(item -> {
+        pedido.getItens().forEach(item -> {
             ItemPedidoDto dto = new ItemPedidoDto(item);
             this.itens.add(dto);
         });

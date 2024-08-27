@@ -36,7 +36,7 @@ public class ProdutoController {
     @Autowired
     private CategoriaService categoriaService;
 
-    @PostMapping("/new")
+    @PostMapping
     @CacheEvict(value = "listaDeProdutos", allEntries = true)
     public ResponseEntity<ProdutoDto> inserirNovo(@RequestBody @Valid ProdutoForm form,
                                                   UriComponentsBuilder uriBuilder,
@@ -47,7 +47,7 @@ public class ProdutoController {
         Produto novo = form.converter(categoriaService);
         service.cadastra(novo);
 
-        URI uri = uriBuilder.path("/api/produtos/new/{id}").buildAndExpand(novo.getId()).toUri();
+        URI uri = uriBuilder.path("/api/produtos/{id}").buildAndExpand(novo.getId()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoDto(novo));
     }
 

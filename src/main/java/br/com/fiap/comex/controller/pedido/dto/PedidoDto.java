@@ -19,7 +19,7 @@ public class PedidoDto {
         this.idCliente = novo.getCliente().getId();
         this.descontoNoPedido = novo.getDesconto();
         this.tipoDesconto = novo.getTipoDesconto();
-        this.itemDePedidos = novo.getListItemDePedido();
+        this.itemDePedidos = novo.getItens();
     }
 
     public Long getId() {

@@ -51,7 +51,7 @@ public class PedidoForm {
 
         for (ProdutoQuantidadeDto pq: listProdutoQntd) {
             ItemDePedido item = pq.convertToItemPedido(produtoService);
-            novo.adicionarItem(item);
+            novo.addItem(item);
         }
         return novo;
     }

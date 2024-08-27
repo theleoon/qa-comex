@@ -69,8 +69,8 @@ public class PedidoController {
             Page<Pedido> all = service.listaTodos(paginacao);
             List<PedidoListagemDto> dto = new ArrayList<>();
             all.forEach(p -> {
-                PedidoListagemDto obj = new PedidoListagemDto(p.getData(), p.getValorTotal(),
-                        p.getDescontoTotal(), p.getQuantidadeProdutosVendidos(), p.getCliente());
+                PedidoListagemDto obj = new PedidoListagemDto(p.getData(), p.getValorLiquido(),
+                        p.getDesconto(), p.getQuantidadeItens(), p.getCliente());
                 dto.add(obj);
             });
             return ResponseEntity.ok(dto);

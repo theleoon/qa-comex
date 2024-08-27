@@ -46,9 +46,9 @@ public class PedidoService implements ServiceInterface<Long, Pedido> {
         int qntPedidosDoCliente = clienteService.getTotalDePedidosDoCliente(pedido.getCliente().getId());
 
         if(qntPedidosDoCliente > 5){
-            pedido.aplicarDesconto(TipoDescontoEnum.FIDELIDADE);
+            pedido.aplicaDesconto(TipoDescontoEnum.FIDELIDADE);
         }else{
-            pedido.aplicarDesconto(TipoDescontoEnum.NENHUM);
+            pedido.aplicaDesconto(TipoDescontoEnum.NENHUM);
         }
     }
 
